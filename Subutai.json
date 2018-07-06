@@ -19,7 +19,7 @@
 		"name": "HTTP-GROUP"
 	}],
 	"ansible-configuration": {
-		"source-url": "https://github.com/sarage/joomla/archive/master.zip",
+		"source-url": "https://github.com/sarage/subutaiBP-Joomla/archive/master.zip",
 		"ansible-playbook": "site.yml",
 		"extra-vars": [{
 				"key": "site_title",
