@@ -37,8 +37,11 @@
         
   - name: 'Download and unzip joomla'
     file: {name: /var/www/html}
-    unarchive: {src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip', dest: '/tmp, remote_src: yes, validate_certs: no'}
-        
+    unarchive: {src: https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip,
+                dest: /tmp, 
+                remote_src: yes, 
+                validate_certs: no}
+    
   - name: 'remove index.html'
     file: {name: /var/www/html/index.html, state: absent}
         
