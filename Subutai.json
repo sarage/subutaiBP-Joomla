@@ -73,12 +73,6 @@
 			"type": "string",
 			"default": "admin"
 		},
-		"containerName": {
-			"description": "Enter the container's hostname",
-			"type": "string",
-			"default": "joomla",
-			"validation": "[a-zA-Z0-9]+"
-		},
 		"containerSize": {
 			"description": "Container Size",
 			"type": "enum",
