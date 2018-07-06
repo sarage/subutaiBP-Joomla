@@ -1,51 +1,52 @@
--
-    hosts: all
-    gather_facts: false
-    remote_user: root
-    tasks:
-        -
-            name: Update
-            raw: 'apt-get -y --allow-unauthenticated update || true'
-        -
-            name: 'Ensure python is available'
-            raw: 'test -e /usr/bin/python || apt install -y --allow-unauthenticated python-minimal'
-        -
-            name: 'Ensure python-apt is available'
-            raw: 'test -d /usr/share/python-apt || apt install -y --allow-unauthenticated python-apt'
-        -
-            name: Upgrade
-            raw: 'apt-get -y --allow-unauthenticated upgrade'
--
-    hosts: joomla
-    remote_user: root
-    tasks:
-        -
-            name: 'Install required debs'
-            apt: "name: {{ item }}\nstate: present\nallow_unauthenticated: yes"
-            with_items: [apache2, mysql-server, php7.0-mysql, php7.0, libapache2-mod-php7.0, php7.0-mcrypt, php7.0-xml, php7.0-curl, php7.0-json, php7.0-cgi]
-        -
-            name: 'Create database'
-            mysql_db: {name: joomla, state: present, encoding: utf8}
-        -
-            name: 'Create database user'
-            mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
-        -
-            name: 'Create joomla config'
-            command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
-            args: {chdir: /var/www/html, creates: /var/www/html/configuration.php}
-        -
-            name: 'Download and unzip joomla'
-            file: {name: /var/www/html}
-            unarchive: {src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip', dest: '/tmp, remote_src: yes, validate_certs: no'}
-        -
-            name: 'remove index.html'
-            file: {name: /var/www/html/index.html, state: absent}
-        -
-            name: 'Move files'
-            command: 'bash -c "mv /tmp/joomla/* /var/www/html/"'
-        -
-            name: 'Change file ownership'
-            file: {path: /var/www/html, recurse: yes, owner: www-data, group: www-data}
-        -
-            name: 'Restart apache'
-            service: {name: apache2, state: restarted}
+---
+
+- hosts: all
+  gather_facts: false
+  remote_user: root
+  tasks:
+        
+    - name: Update
+      raw: 'apt-get -y --allow-unauthenticated update || true'
+        
+    -   name: 'Ensure python is available'
+        raw: 'test -e /usr/bin/python || apt install -y --allow-unauthenticated python-minimal'
+        
+    -   name: 'Ensure python-apt is available'
+        raw: 'test -d /usr/share/python-apt || apt install -y --allow-unauthenticated python-apt'
+        
+    -   name: Upgrade
+        raw: 'apt-get -y --allow-unauthenticated upgrade'
+
+- hosts: joomla
+  remote_user: root
+  tasks:
+        
+  - name: 'Install required debs'
+    apt: "name: {{ item }}\nstate: present\nallow_unauthenticated: yes"
+    with_items: [apache2, mysql-server, php7.0-mysql, php7.0, libapache2-mod-php7.0, php7.0-mcrypt, php7.0-xml, php7.0-curl, php7.0-json, php7.0-cgi]
+        
+  - name: 'Create database'
+    mysql_db: {name: joomla, state: present, encoding: utf8}
+        
+  - name: 'Create database user'
+    mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
+        
+  - name: 'Create joomla config'
+    command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
+    args: {chdir: /var/www/html, creates: /var/www/html/configuration.php}
+        
+  - name: 'Download and unzip joomla'
+    file: {name: /var/www/html}
+    unarchive: {src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip', dest: '/tmp, remote_src: yes, validate_certs: no'}
+        
+  - name: 'remove index.html'
+    file: {name: /var/www/html/index.html, state: absent}
+        
+  - name: 'Move files'
+    command: 'bash -c "mv /tmp/joomla/* /var/www/html/"'
+        
+  - name: 'Change file ownership'
+    file: {path: /var/www/html, recurse: yes, owner: www-data, group: www-data}
+        
+  - name: 'Restart apache'
+    service: {name: apache2, state: restarted}
