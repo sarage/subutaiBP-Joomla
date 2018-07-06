@@ -1,0 +1,89 @@
+{
+	"name": "${environmentName}",
+	"description": "Joomla",
+	"version": "1.0.0",
+	"author": "https://github.com/sarage",
+	"containers": [{
+		"hostname": "joomla",
+		"template": "debian-stretch",
+		"peer-criteria": "HTTP-GROUP",
+		"size": "${containerSize}",
+		"port-mapping": [{
+			"protocol": "http",
+			"domain": "${domainName}",
+			"internal-port": "80",
+			"external-port": "80"
+		}]
+	}],
+	"peer-criteria": [{
+		"name": "HTTP-GROUP"
+	}],
+	"ansible-configuration": {
+		"source-url": "https://github.com/sarage/joomla/archive/master.zip",
+		"ansible-playbook": "site.yml",
+		"extra-vars": [{
+				"key": "site_title",
+				"value": "${siteTitle}"
+			},
+			{
+				"key": "domain_name",
+				"value": "${domainName}"
+			},
+			{
+				"key": "admin_user",
+				"value": "${adminUser}"
+			},
+			{
+				"key": "admin_pwd",
+				"value": "${adminPwd}"
+			}
+		],
+		"groups": [{
+			"name": "joomla",
+			"hostnames": [
+				"joomla"
+			]
+		}]
+	},
+	"user-variables": {
+		"environmentName": {
+			"description": "Enter the environment name",
+			"type": "string",
+			"default": "joomla",
+			"validation": "[a-zA-Z0-9]+"
+		},
+		"domainName": {
+			"description": "Enter the application domain name",
+			"type": "domain",
+			"default": "example.com",
+			"validation": "[a-zA-Z0-9]+"
+		},
+		"siteTitle": {
+			"description": "Enter the site's title",
+			"type": "string",
+			"default": "title"
+		},
+		"adminUser": {
+			"description": "Site administrator user",
+			"type": "string",
+			"default": "admin"
+		},
+		"adminPwd": {
+			"description": "Site administrator password",
+			"type": "string",
+			"default": "admin"
+		},
+		"containerName": {
+			"description": "Enter the container's hostname",
+			"type": "string",
+			"default": "joomla",
+			"validation": "[a-zA-Z0-9]+"
+		},
+		"containerSize": {
+			"description": "Container Size",
+			"type": "enum",
+			"default": "TINY",
+			"validation": "TINY,SMALL,MEDIUM,LARGE,HUGE"
+		}
+	}
+}
