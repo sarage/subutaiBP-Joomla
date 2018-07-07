@@ -43,16 +43,6 @@
         
   - name: 'Create database user'
     mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
-    
-  - name: 'download joomla core'
-    command: "joomla core download --allow-root"
-    args:
-      chdir: "/var/www/html"
-      creates: "/var/www/html/index.php"
-        
-  - name: 'Create joomla config'
-    command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
-    args: {chdir: /var/www/html, creates: /var/www/html/configuration.php}
                 
   - name: deploy get url
     win_get_url:
@@ -63,6 +53,16 @@
     win_unzip:
          src: '/tmp'
          dest: '/tmp, remote_src: yes'            
+         
+  - name: 'download joomla core'
+    command: "joomla core download --allow-root"
+    args:
+      chdir: "/var/www/html"
+      creates: "/var/www/html/index.php"
+        
+  - name: 'Create joomla config'
+    command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
+    args: {chdir: /var/www/html, creates: /var/www/html/configuration.php}
                 
   - name: 'remove index.html'
     file: {name: /var/www/html/index.html, state: absent}
