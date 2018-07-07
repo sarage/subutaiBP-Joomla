@@ -44,15 +44,9 @@
   - name: 'Create database user'
     mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
                 
-  - name: deploy get url
-    win_get_url:
-         url: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip'
-         dest: '/tmp, remote_src: yes'
-  
-  - name: deploy unzip
-    win_unzip:
-         src: '/tmp'
-         dest: '/tmp, remote_src: yes'            
+  - name: 'Download and unzip joomla'
+    file: {name: /var/www/html}
+    unarchive: {src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip', dest: '/tmp, remote_src: yes, validate_certs: no'}     
          
   - name: 'download joomla core'
     command: "joomla core download --allow-root"
