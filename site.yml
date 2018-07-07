@@ -47,7 +47,7 @@
   - name: 'Download and unzip joomla'
     unarchive: 
       src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip'
-      dest: '/var/www/html' 
+      dest: '/tmp' 
       remote_src: 'true'
          
   - name: 'Create joomla config'
