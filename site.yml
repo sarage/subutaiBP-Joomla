@@ -44,11 +44,14 @@
   - name: 'Create database user'
     mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
                 
-  - name: 'Download and unzip joomla'
+  - name: 'Download joomla'
     unarchive: 
       src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip'
       dest: '/tmp, remote_src: yes, validate_certs: no'
+    
+  - name: 'unzip joomla'  
     file:
+      src: /tmp
       name: /var/www/html
          
   - name: 'Create joomla config'
