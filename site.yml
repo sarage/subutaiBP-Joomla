@@ -25,6 +25,12 @@
     apt: "name: {{ item }}, state: present\nallow_unauthenticated: yes"
     with_items: [apache2, mysql-server, php7.0-mysql, php7.0, libapache2-mod-php7.0, php7.0-mcrypt, php7.0-xml, php7.0-curl, php7.0-json, php7.0-cgi]
     
+  - name: 'install mariadb'
+    apt: 
+      name: mariadb-server
+      allow_unauthenticated:yes
+      update_cache: no
+    
   - name: 'Install python-mysqldb'
     apt:
       name: python-mysqldb
