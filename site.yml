@@ -24,9 +24,25 @@
   remote_user: root
   tasks:
         
-  - name: 'Install required debs'
-    apt: "name: {{ item }}, state: present\nallow_unauthenticated: yes"
-    with_items: [apache2, mysql-server, php7.0-mysql, php7.0, libapache2-mod-php7.0, php7.0-mcrypt, php7.0-xml, php7.0-curl, php7.0-json, php7.0-cgi]
+  - name: "install php"
+    apt:
+      name: "php7.0"
+      allow_unauthenticated: yes
+                
+  - name: "install php-cgi"
+    apt:
+      name: "php7.0-cgi"
+      allow_unauthenticated: yes
+   
+  - name: "install php-mysql"
+    apt:
+      name: "php7.0-mysql"
+      allow_unauthenticated": yes
+                  
+  - name: "install apache2"
+    apt:
+      name: "apache2"
+      allow_unauthenticated: yes
     
   - name: 'install mariadb'
     apt: 
@@ -45,8 +61,11 @@
     mysql_user: {name: root, password: root, priv: 'joomla.*:ALL'}
                 
   - name: 'Download and unzip joomla'
-    file: {name: /var/www/html}
-    unarchive: {src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip', dest: '/tmp, remote_src: yes, validate_certs: no'}     
+    file: 
+      name: /var/www/html
+    unarchive: 
+      src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip'
+      dest: '/tmp, remote_src: yes, validate_certs: no'     
          
   - name: 'Create joomla config'
     command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
