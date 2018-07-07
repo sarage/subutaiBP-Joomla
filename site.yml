@@ -28,7 +28,7 @@
   - name: 'install mariadb'
     apt: 
       name: mariadb-server
-      allow_unauthenticated:yes
+      allow_unauthenticated: yes
     
   - name: 'Install python-mysqldb'
     apt:
