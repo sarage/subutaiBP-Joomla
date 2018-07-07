@@ -47,7 +47,9 @@
   - name: 'Download and unzip joomla'
     unarchive: 
       src: 'https://downloads.joomla.org/ru/cms/joomla3/3-8-8/Joomla_3-8-8-Stable-Full_Package.zip?format=zip'
-      dest: '/tmp, remote_src: yes, validate_certs: no'     
+      dest: '/tmp, remote_src: yes, validate_certs: no'
+    file:
+      name: /var/www/html
          
   - name: 'Create joomla config'
     command: 'joomla config create --dbname=joomla --dbuser=root --dbpass=root --allow-root'
